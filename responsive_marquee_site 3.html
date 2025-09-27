@@ -1,0 +1,1552 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Marquee - Curated Luxury Gifts</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@300;400;500;600;700&family=Lato:wght@300;400;500&display=swap');
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        /* CSS VARIABLES FOR DARK MODE (Default Theme) */
+        :root {
+            --bg-body-gradient: linear-gradient(135deg, #1a1a1a 0%, #2c2c2c 50%, #1a1a1a 100%);
+            --bg-primary: #121212;
+            --bg-secondary: #1e1e1e;
+            --text-primary: #ffffff;
+            --text-secondary: #b3b3b3;
+            --shadow-color: rgba(255, 255, 255, 0.05);
+            --border-color: #333;
+            --hover-bg: #282828;
+            --modal-bg: #1e1e1e;
+            --modal-backdrop: rgba(18, 18, 18, 0.95);
+            --header-shadow: 0 5px 20px rgba(0, 0, 0, 0.3);
+        }
+
+        /* LIGHT MODE OVERRIDES */
+        .light-mode {
+            --bg-body-gradient: #ffffff;
+            --bg-primary: #ffffff;
+            --bg-secondary: #ffffff;
+            --text-primary: #1a1a1a;
+            --text-secondary: #444;
+            --shadow-color: rgba(0, 0, 0, 0.05);
+            --border-color: #eee;
+            --hover-bg: #f5f5f5;
+            --modal-bg: #ffffff;
+            --modal-backdrop: rgba(255, 255, 255, 0.95);
+            --header-shadow: 0 5px 20px rgba(0, 0, 0, 0.05);
+        }
+
+        body {
+            font-family: 'Lato', sans-serif;
+            background: var(--bg-body-gradient); 
+            color: var(--text-primary); 
+            line-height: 1.6;
+            overflow-x: hidden;
+            transition: background 0.5s ease, color 0.5s ease;
+        }
+
+        /* MOBILE-FIRST RESPONSIVE HEADER */
+        .header {
+            background: var(--bg-secondary);
+            backdrop-filter: blur(10px);
+            padding: 1rem 0;
+            position: fixed;
+            width: 100%;
+            top: 0;
+            z-index: 1000;
+            box-shadow: var(--header-shadow);
+            border-bottom: 1px solid var(--border-color);
+            transition: background 0.5s ease, box-shadow 0.5s ease, border-color 0.5s ease;
+        }
+
+        .header-top {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            max-width: 1600px;
+            margin: 0 auto;
+            padding: 0 1rem;
+        }
+
+        /* Mobile Header Links - Hidden on small screens, shown via hamburger */
+        .header-links {
+            display: none;
+            position: absolute;
+            top: 100%;
+            left: 0;
+            right: 0;
+            background: var(--bg-secondary);
+            border-top: 1px solid var(--border-color);
+            padding: 1rem;
+            flex-direction: column;
+            gap: 1rem;
+            z-index: 999;
+        }
+
+        .header-links.mobile-active {
+            display: flex;
+        }
+
+        .logo {
+            text-align: center;
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .logo h1 {
+            font-family: 'Playfair Display', serif;
+            font-size: 2rem;
+            color: var(--text-primary);
+            letter-spacing: 2px;
+            font-weight: 300;
+            margin-bottom: 0.2rem;
+            position: relative;
+            display: inline-block;
+            white-space: nowrap;
+            text-align: center;
+        }
+
+        /* Animated Letters */
+        .animated-letter {
+            display: inline-block;
+            animation: letterFloat 3s ease-in-out infinite;
+            animation-fill-mode: both;
+        }
+
+        .animated-letter:nth-child(1) { animation-delay: 0s; }
+        .animated-letter:nth-child(2) { animation-delay: 0.2s; }
+        .animated-letter:nth-child(3) { animation-delay: 0.4s; }
+        .animated-letter:nth-child(4) { animation-delay: 0.6s; }
+        .animated-letter:nth-child(5) { animation-delay: 0.8s; }
+        .animated-letter:nth-child(6) { animation-delay: 1s; }
+        .animated-letter:nth-child(7) { animation-delay: 1.2s; }
+
+        @keyframes letterFloat {
+            0%, 100% {
+                transform: translateY(0px) rotateZ(0deg);
+                color: var(--text-primary);
+            }
+            25% {
+                transform: translateY(-4px) rotateZ(1deg);
+                color: #d4af37;
+                text-shadow: 0 3px 10px rgba(212, 175, 55, 0.4);
+            }
+            50% {
+                transform: translateY(-6px) rotateZ(-1deg);
+                color: #a58b73;
+                text-shadow: 0 5px 15px rgba(212, 175, 55, 0.6);
+            }
+            75% {
+                transform: translateY(-3px) rotateZ(0.5deg);
+                color: #d4af37;
+                text-shadow: 0 2px 8px rgba(212, 175, 55, 0.3);
+            }
+        }
+
+        .logo p {
+            font-size: 0.7rem;
+            color: #a58b73;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            font-weight: 300;
+        }
+        
+        .theme-toggle {
+            background: none;
+            border: none;
+            font-size: 1.2rem;
+            cursor: pointer;
+            padding: 0.5rem;
+            border-radius: 50%;
+            transition: background 0.3s ease, transform 0.3s ease;
+            color: var(--text-primary); 
+        }
+        
+        .theme-toggle:hover {
+            background: var(--hover-bg);
+            transform: scale(1.1);
+        }
+        
+        /* Mobile Navigation Toggle */
+        .mobile-menu-toggle {
+            display: block;
+            background: none;
+            border: none;
+            font-size: 1.5rem;
+            color: var(--text-primary);
+            cursor: pointer;
+            padding: 0.5rem;
+        }
+
+        .user-actions {
+            display: flex;
+            gap: 0.5rem;
+            align-items: center;
+        }
+
+        .user-actions a {
+            color: var(--text-primary);
+            text-decoration: none;
+            font-size: 0.8rem;
+            font-weight: 300;
+            letter-spacing: 1px;
+            transition: all 0.3s ease;
+            padding: 0.3rem 0.8rem;
+            border: 1px solid var(--border-color);
+            border-radius: 15px;
+        }
+
+        .user-actions a:hover {
+            color: #d4af37;
+            border-color: #d4af37;
+            background: var(--hover-bg);
+        }
+
+        /* Mobile Navigation */
+        .nav {
+            background: var(--bg-secondary);
+            padding: 0;
+            border-top: 1px solid var(--border-color);
+            transition: background 0.5s ease, border-color 0.5s ease;
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.3s ease;
+        }
+
+        .nav.active {
+            max-height: 500px;
+            padding: 1rem 0;
+        }
+
+        .nav-container {
+            display: flex;
+            flex-direction: column;
+            max-width: 1600px;
+            margin: 0 auto;
+            padding: 0 1rem;
+        }
+
+        .nav a {
+            color: var(--text-primary);
+            text-decoration: none;
+            text-transform: uppercase;
+            font-size: 0.85rem;
+            font-weight: 400;
+            letter-spacing: 1.5px;
+            padding: 1rem;
+            margin: 0;
+            border-bottom: 1px solid var(--border-color);
+            transition: color 0.3s ease, background 0.3s ease;
+        }
+
+        .nav a:last-child {
+            border-bottom: none;
+        }
+
+        .nav a:hover {
+            color: #d4af37;
+            background: var(--hover-bg);
+        }
+
+        /* Mobile Dropdown */
+        .dropdown {
+            position: relative;
+        }
+
+        .dropdown-arrow {
+            font-size: 0.7rem;
+            vertical-align: middle;
+            margin-left: 5px;
+            transition: transform 0.3s ease;
+        }
+
+        .dropdown.active .dropdown-arrow {
+            transform: rotate(180deg);
+        }
+
+        .dropdown-content {
+            max-height: 0;
+            overflow: hidden;
+            background: var(--hover-bg);
+            transition: max-height 0.3s ease;
+        }
+
+        .dropdown.active .dropdown-content {
+            max-height: 500px;
+        }
+
+        .dropdown-content a {
+            color: var(--text-primary) !important;
+            padding: 0.8rem 2rem;
+            text-decoration: none;
+            display: block;
+            text-align: left;
+            text-transform: none;
+            font-size: 0.9rem;
+            font-weight: 400;
+            letter-spacing: 0;
+            margin: 0;
+            border-bottom: 1px solid var(--border-color);
+            transition: background 0.3s ease, color 0.3s ease;
+        }
+
+        .dropdown-content a:hover {
+            background: var(--hover-bg) !important;
+            color: #d4af37 !important;
+        }
+
+        /* MOBILE-RESPONSIVE HERO */
+        .hero {
+            margin-top: 120px;
+            padding: 4rem 0;
+            background: var(--bg-primary);
+            text-align: center;
+            position: relative;
+            z-index: 1;
+            border-bottom: 1px solid var(--border-color);
+            transition: background 0.5s ease;
+            overflow: hidden;
+        }
+
+        .hero-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 1rem;
+            position: relative;
+            z-index: 10;
+        }
+
+        .hero h2 {
+            font-family: 'Playfair Display', serif;
+            font-size: 2.5rem;
+            color: var(--text-primary);
+            font-weight: 300;
+            line-height: 1.1;
+            margin-bottom: 1rem;
+            text-shadow: 0 0 10px rgba(212, 175, 55, 0.2);
+        }
+
+        .hero-subtitle {
+            font-size: 1rem;
+            color: var(--text-secondary);
+            max-width: 100%;
+            margin: 0 auto 2rem;
+            font-weight: 300;
+            letter-spacing: 0.5px;
+        }
+        
+        /* Mobile Moving Circle */
+        .moving-circle {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 300px;
+            height: 300px;
+            border-radius: 50%;
+            border: 1px solid rgba(212, 175, 55, 0.2);
+            transform: translate(-50%, -50%);
+            pointer-events: none;
+            z-index: 0;
+            transition: border-color 0.5s ease;
+            animation: pulse 8s infinite ease-in-out;
+        }
+
+        @keyframes pulse {
+            0% {
+                transform: translate(-50%, -50%) scale(1);
+                box-shadow: 0 0 0 0 rgba(212, 175, 55, 0.4);
+            }
+            50% {
+                transform: translate(-50%, -50%) scale(1.05);
+                box-shadow: 0 0 20px 3px rgba(212, 175, 55, 0.6);
+            }
+            100% {
+                transform: translate(-50%, -50%) scale(1);
+                box-shadow: 0 0 0 0 rgba(212, 175, 55, 0.4);
+            }
+        }
+
+        /* Mobile Features */
+        .features {
+            display: flex;
+            flex-direction: column;
+            gap: 1.5rem;
+            margin-top: 2rem;
+        }
+
+        .feature {
+            background: var(--bg-secondary);
+            padding: 1.5rem;
+            border-radius: 10px;
+            text-align: left;
+            transition: all 0.3s ease;
+            box-shadow: 0 10px 30px var(--shadow-color);
+            border: 1px solid var(--border-color);
+        }
+
+        .feature:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 15px 40px var(--shadow-color);
+        }
+
+        .feature-icon {
+            font-size: 1.8rem;
+            margin-bottom: 1rem;
+            color: #d4af37;
+        }
+
+        .feature h3 {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.3rem;
+            color: var(--text-primary);
+            margin-bottom: 0.5rem;
+            font-weight: 500;
+        }
+
+        .feature p {
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+        }
+
+        /* Mobile Categories */
+        .categories {
+            padding: 4rem 0;
+            background: var(--bg-primary);
+            transition: background 0.5s ease;
+        }
+
+        .categories-container {
+            max-width: 1600px;
+            margin: 0 auto;
+            padding: 0 1rem;
+            text-align: center;
+        }
+
+        .categories h2 {
+            font-family: 'Playfair Display', serif;
+            font-size: 2rem;
+            color: var(--text-primary);
+            font-weight: 300;
+            margin-bottom: 0.5rem;
+        }
+
+        .categories-subtitle {
+            font-size: 1rem;
+            color: var(--text-secondary);
+            margin: 0.5rem auto 2rem;
+            font-weight: 300;
+        }
+
+        .categories h3 {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.5rem;
+            color: var(--text-primary);
+            font-weight: 400;
+            margin-top: 2rem;
+            margin-bottom: 1rem;
+        }
+
+        /* Mobile Category Grid */
+        .category-grid {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 2rem;
+        }
+
+        .category-card {
+            background: var(--bg-secondary);
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 10px 30px var(--shadow-color);
+            transition: all 0.4s ease-in-out;
+            border: 1px solid var(--border-color);
+            display: flex;
+            flex-direction: column;
+        }
+
+        .category-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 40px var(--shadow-color);
+        }
+
+        .category-img {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+            transition: transform 0.5s ease;
+        }
+
+        .category-card:hover .category-img {
+            transform: scale(1.03);
+        }
+
+        .category-card h3 {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.4rem;
+            color: var(--text-primary);
+            margin: 1rem 0 0.5rem;
+            font-weight: 400;
+            text-align: center;
+        }
+
+        .category-card p {
+            color: var(--text-secondary);
+            padding: 0 1rem;
+            font-size: 0.9rem;
+            flex-grow: 1;
+        }
+
+        .category-card .btn {
+            background: linear-gradient(90deg, #a58b73, #d4af37);
+            color: #1a1a1a;
+            border: none;
+            padding: 0.8rem 1.5rem;
+            font-size: 0.9rem;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin: 1rem;
+            border-radius: 5px;
+            font-weight: bold;
+        }
+
+        .category-card .btn:hover {
+            opacity: 0.9;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(212, 175, 55, 0.4);
+        }
+
+        /* Mobile Filters */
+        .filters {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+            margin-top: 3rem;
+            padding: 2rem 0;
+            border-top: 1px solid var(--border-color);
+        }
+
+        .filter-group {
+            background: var(--bg-secondary);
+            padding: 1rem;
+            border-radius: 8px;
+            box-shadow: 0 10px 30px var(--shadow-color);
+            border: 1px solid var(--border-color);
+        }
+
+        .filter-group h4 {
+            color: var(--text-primary);
+            font-size: 0.9rem;
+            margin-bottom: 0.5rem;
+            font-weight: 500;
+        }
+
+        .filter-group select {
+            width: 100%;
+            padding: 0.8rem;
+            border-radius: 4px;
+            border: 1px solid var(--border-color);
+            background: var(--bg-secondary);
+            color: var(--text-primary);
+            font-size: 1rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .filter-group select:focus {
+            outline: none;
+            border-color: #d4af37;
+            box-shadow: 0 0 0 2px rgba(212, 175, 55, 0.2);
+        }
+
+        /* Mobile Image Sequence */
+        .image-sequence-section {
+            padding: 4rem 0;
+            background-color: var(--bg-primary); 
+            overflow: hidden; 
+            border-top: 1px solid var(--border-color);
+            transition: background-color 0.5s ease, border-color 0.5s ease;
+        }
+        
+        .image-sequence-wrapper {
+            display: flex;
+            width: max-content;
+            animation: marquee-scroll 60s linear infinite;
+        }
+
+        .image-sequence-item {
+            flex-shrink: 0;
+            margin-right: 1rem;
+            width: 250px; 
+            height: 200px; 
+            overflow: hidden;
+            border-radius: 8px;
+            box-shadow: 0 10px 30px var(--shadow-color);
+            border: 1px solid var(--border-color);
+        }
+
+        .image-sequence-item img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.5s ease;
+        }
+        
+        @keyframes marquee-scroll {
+            0% { transform: translateX(0); }
+            100% { transform: translateX(-50%); } 
+        }
+
+        .image-sequence-wrapper:hover {
+            animation-play-state: paused;
+        }
+
+        .image-sequence-item:hover img {
+            transform: scale(1.05);
+        }
+
+        /* Mobile Contact */
+        .contact-section {
+            padding: 4rem 0;
+            background: var(--bg-primary);
+            text-align: center;
+            border-top: 1px solid var(--border-color);
+            transition: background 0.5s ease, border-color 0.5s ease;
+        }
+
+        .contact-details {
+            max-width: 100%;
+            margin: 0 auto;
+            padding: 0 1rem;
+        }
+
+        .contact-section h2 {
+            font-family: 'Playfair Display', serif;
+            font-size: 2rem;
+            color: var(--text-primary);
+            font-weight: 300;
+            margin-bottom: 1.5rem;
+        }
+
+        .contact-details p {
+            font-size: 1rem;
+            color: var(--text-secondary);
+            margin-bottom: 1rem;
+        }
+
+        .contact-details a {
+            color: #d4af37;
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+
+        .contact-details a:hover {
+            text-decoration: underline;
+        }
+
+        .social-links {
+            margin: 2rem 0;
+            font-size: 1.3rem;
+        }
+
+        .social-links a {
+            color: var(--text-primary);
+            margin: 0 8px;
+            transition: color 0.3s ease;
+        }
+
+        .social-links a:hover {
+            color: #d4af37;
+        }
+
+        .direct-payments {
+            margin-top: 2rem;
+            padding-top: 2rem;
+            border-top: 1px solid var(--border-color);
+        }
+
+        .direct-payments h3 {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.5rem;
+            color: var(--text-primary);
+            font-weight: 400;
+            margin-bottom: 1rem;
+        }
+
+        /* Mobile Footer */
+        .footer {
+            background: var(--bg-secondary);
+            color: var(--text-primary);
+            padding: 3rem 0;
+            text-align: center;
+            border-top: 1px solid var(--border-color);
+            transition: background 0.5s ease, color 0.5s ease, border-color 0.5s ease;
+        }
+
+        .footer-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 1rem;
+        }
+
+        .footer h3 {
+            font-family: 'Playfair Display', serif;
+            font-size: 2rem;
+            font-weight: 300;
+            margin-bottom: 0.5rem;
+        }
+
+        .footer p {
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .footer-links {
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .footer-links a {
+            color: var(--text-secondary);
+            text-decoration: none;
+            font-size: 0.9rem;
+            transition: color 0.3s ease;
+            padding: 0.5rem;
+        }
+
+        .footer-links a:hover {
+            color: #d4af37;
+        }
+
+        /* Mobile Modal */
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 2000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            overflow: auto;
+            background-color: var(--modal-backdrop);
+            padding: 1rem;
+        }
+
+        .modal-content {
+            background: var(--modal-bg);
+            margin: 10% auto;
+            padding: 1.5rem;
+            border: 1px solid #888;
+            width: 100%;
+            max-width: 500px;
+            border-radius: 10px;
+            position: relative;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.5);
+            transition: background 0.5s ease, color 0.5s ease;
+        }
+
+        .close-button {
+            color: var(--text-primary);
+            font-size: 24px;
+            font-weight: bold;
+            position: absolute;
+            top: 10px;
+            right: 15px;
+            cursor: pointer;
+            transition: color 0.3s ease;
+        }
+
+        .close-button:hover,
+        .close-button:focus {
+            color: #d4af37;
+            text-decoration: none;
+            cursor: pointer;
+        }
+
+        .modal-content h2 {
+            font-family: 'Playfair Display', serif;
+            color: var(--text-primary);
+            font-size: 1.8rem;
+            margin-bottom: 1rem;
+            font-weight: 500;
+        }
+
+        .modal-content p, .modal-content ul {
+            font-size: 0.9rem;
+            line-height: 1.6;
+            color: var(--text-secondary);
+            margin-bottom: 1rem;
+            text-align: left;
+        }
+
+        .modal-content ul {
+            list-style-type: none;
+            padding-left: 0;
+        }
+
+        .modal-content li {
+            position: relative;
+            padding-left: 20px;
+            margin-bottom: 8px;
+        }
+
+        .modal-content li::before {
+            content: '•';
+            color: #d4af37;
+            font-weight: bold;
+            display: inline-block;
+            width: 1em;
+            margin-left: -1em;
+        }
+
+        /* TABLET BREAKPOINT */
+        @media (min-width: 768px) {
+            .header-top {
+                padding: 0 2rem;
+            }
+
+            .header-links {
+                display: flex;
+                gap: 2rem;
+                align-items: center;
+            }
+
+            .header-links a {
+                color: var(--text-primary);
+                text-decoration: none;
+                font-size: 0.9rem;
+                font-weight: 300;
+                letter-spacing: 1px;
+                transition: all 0.3s ease;
+                position: relative;
+            }
+
+            .header-links a::after {
+                content: '';
+                position: absolute;
+                bottom: -5px;
+                left: 0;
+                width: 0;
+                height: 1px;
+                background: linear-gradient(90deg, #a58b73, #d4af37);
+                transition: width 0.3s ease;
+            }
+
+            .header-links a:hover {
+                color: #d4af37;
+            }
+
+            .header-links a:hover::after {
+                width: 100%;
+            }
+
+            .mobile-menu-toggle {
+                display: none;
+            }
+
+            .nav {
+                max-height: none;
+                padding: 1rem 0;
+                overflow: visible;
+            }
+
+            .nav-container {
+                flex-direction: row;
+                justify-content: center;
+                align-items: center;
+                padding: 0 2rem;
+            }
+
+            .nav a {
+                border-bottom: none;
+                margin: 0 1rem;
+                position: relative;
+            }
+
+            .nav a::before {
+                content: '';
+                position: absolute;
+                top: 50%;
+                left: 50%;
+                width: 100%;
+                height: 100%;
+                background: var(--hover-bg);
+                border-radius: 5px;
+                transform: translate(-50%, -50%) scale(0.8);
+                opacity: 0;
+                z-index: -1;
+                transition: all 0.3s ease;
+            }
+
+            .nav a:hover::before {
+                transform: translate(-50%, -50%) scale(1);
+                opacity: 1;
+            }
+
+            .dropdown-content {
+                position: absolute;
+                top: 100%;
+                left: 50%;
+                transform: translateX(-50%) translateY(-10px);
+                background: var(--bg-secondary);
+                min-width: 300px;
+                padding: 10px 0;
+                z-index: 1001;
+                box-shadow: 0 10px 30px var(--shadow-color);
+                border: 1px solid rgba(212, 175, 55, 0.3);
+                border-radius: 8px;
+                display: none;
+                opacity: 0;
+                visibility: hidden;
+                transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+                backdrop-filter: blur(5px);
+                max-height: none;
+                overflow: visible;
+            }
+
+            .dropdown:hover .dropdown-content {
+                display: block;
+                opacity: 1;
+                visibility: visible;
+                transform: translateX(-50%) translateY(0);
+            }
+
+            .dropdown-content a {
+                padding: 12px 20px !important;
+                border-bottom: 1px solid var(--border-color) !important;
+                font-size: 1rem !important;
+            }
+
+            .logo h1 {
+                font-size: 3rem;
+                letter-spacing: 3px;
+            }
+
+            .logo p {
+                font-size: 0.8rem;
+                letter-spacing: 2px;
+            }
+
+            .hero {
+                margin-top: 140px;
+                padding: 6rem 0;
+            }
+
+            .hero h2 {
+                font-size: 4rem;
+            }
+
+            .hero-subtitle {
+                font-size: 1.3rem;
+                max-width: 800px;
+            }
+
+            .moving-circle {
+                width: 500px;
+                height: 500px;
+            }
+
+            .features {
+                flex-direction: row;
+                gap: 2rem;
+            }
+
+            .feature {
+                max-width: 350px;
+                padding: 2rem;
+            }
+
+            .category-grid {
+                grid-template-columns: repeat(2, 1fr);
+                gap: 2.5rem;
+            }
+
+            .category-img {
+                height: 250px;
+            }
+
+            .filters {
+                flex-direction: row;
+                justify-content: center;
+                gap: 2rem;
+            }
+
+            .image-sequence-item {
+                width: 350px;
+                height: 250px;
+                margin-right: 2rem;
+            }
+
+            .footer-links {
+                flex-direction: row;
+                justify-content: center;
+                gap: 1rem;
+            }
+
+            .footer-links a {
+                padding: 0;
+                margin: 0 15px;
+            }
+
+            .categories h2 {
+                font-size: 2.5rem;
+            }
+
+            .categories h3 {
+                font-size: 1.8rem;
+            }
+
+            .contact-section h2 {
+                font-size: 2.5rem;
+            }
+
+            .modal-content {
+                max-width: 600px;
+                padding: 2rem;
+                margin: 5% auto;
+            }
+
+            .modal-content h2 {
+                font-size: 2rem;
+            }
+
+            .modal-content p, .modal-content ul {
+                font-size: 1rem;
+            }
+        }
+
+        /* DESKTOP BREAKPOINT */
+        @media (min-width: 1024px) {
+            .header-top {
+                padding: 0 3rem;
+            }
+
+            .nav-container {
+                padding: 0 3rem;
+            }
+
+            .categories-container {
+                padding: 0 3rem;
+            }
+
+            .logo h1 {
+                font-size: 3.5rem;
+                letter-spacing: 4px;
+            }
+
+            .logo p {
+                font-size: 0.9rem;
+            }
+
+            .hero {
+                padding: 8rem 0;
+            }
+
+            .hero h2 {
+                font-size: 5rem;
+            }
+
+            .hero-subtitle {
+                font-size: 1.5rem;
+            }
+
+            .moving-circle {
+                width: 600px;
+                height: 600px;
+            }
+
+            @keyframes pulse {
+                0% {
+                    transform: translate(-50%, -50%) scale(1);
+                    box-shadow: 0 0 0 0 rgba(212, 175, 55, 0.4);
+                }
+                50% {
+                    transform: translate(-50%, -50%) scale(1.05);
+                    box-shadow: 0 0 30px 5px rgba(212, 175, 55, 0.6);
+                }
+                100% {
+                    transform: translate(-50%, -50%) scale(1);
+                    box-shadow: 0 0 0 0 rgba(212, 175, 55, 0.4);
+                }
+            }
+
+            .categories {
+                padding: 6rem 0;
+            }
+
+            .categories h2 {
+                font-size: 3rem;
+            }
+
+            .categories-subtitle {
+                font-size: 1.1rem;
+                max-width: 900px;
+            }
+
+            .categories h3 {
+                font-size: 2rem;
+            }
+
+            .category-grid {
+                grid-template-columns: repeat(3, 1fr);
+                gap: 3rem;
+            }
+
+            .image-sequence-section {
+                padding: 6rem 0;
+            }
+
+            .image-sequence-wrapper {
+                animation: marquee-scroll 40s linear infinite;
+            }
+
+            .image-sequence-item {
+                width: 400px;
+                height: 300px;
+            }
+
+            .contact-section {
+                padding: 6rem 0;
+            }
+
+            .contact-section h2 {
+                font-size: 3rem;
+            }
+
+            .contact-details p {
+                font-size: 1.2rem;
+            }
+
+            .social-links {
+                font-size: 1.5rem;
+            }
+
+            .direct-payments h3 {
+                font-size: 2rem;
+            }
+
+            .footer {
+                padding: 4rem 0;
+            }
+
+            .footer h3 {
+                font-size: 2.5rem;
+            }
+
+            .footer p {
+                font-size: 1rem;
+            }
+
+            .modal-content {
+                max-width: 700px;
+                padding: 30px;
+            }
+
+            .modal-content h2 {
+                font-size: 2.2rem;
+            }
+
+            .modal-content p, .modal-content ul {
+                font-size: 1.1rem;
+            }
+        }
+
+    </style>
+</head>
+<body class="dark-mode-default">
+    <div class="particles" id="particles"></div>
+
+    <header class="header">
+        <div class="header-top">
+            <div class="header-links">
+                <a href="#faq">FAQ's</a>
+                <a href="#contact-section">Contact</a>
+            </div>
+            <div class="logo">
+                <h1>
+                    <span class="animated-letter">M</span>
+                    <span class="animated-letter">A</span>
+                    <span class="animated-letter">R</span>
+                    <span class="animated-letter">Q</span>
+                    <span class="animated-letter">U</span>
+                    <span class="animated-letter">E</span>
+                    <span class="animated-letter">E</span>
+                </h1>
+                <p>Curated Luxury Gifts</p>
+            </div>
+            <div class="user-actions">
+                <button id="theme-toggle" class="theme-toggle" aria-label="Toggle Theme">☀️</button> 
+                <button class="mobile-menu-toggle" id="mobile-menu-toggle" aria-label="Menu">☰</button>
+                <a href="#search">Search</a>
+                <a href="#account">Account</a>
+                <a href="#basket">Basket</a>
+            </div>
+        </div>
+        <nav class="nav" id="mobile-nav">
+            <div class="nav-container">
+                <a href="#gifts">Gift Collections</a>
+                <a href="#corporate">Corporate Gifting</a>
+                <a href="#occasions">Special Occasions</a>
+                <div class="dropdown" id="categories-dropdown">
+                    <a href="#" class="dropbtn">Categories <span class="dropdown-arrow">▼</span></a>
+                    <div class="dropdown-content">
+                        <a href="#curated-bundles">Curated Gift Bundles</a>
+                        <a href="#gift-packaging">Gift Packaging & Presentation</a>
+                        <a href="#gourmet">Gourmet</a>
+                        <a href="#luxury-accessories">Luxury Accessories & Organizers</a>
+                        <a href="#mens-grooming">Men's Grooming & Lifestyle Sets</a>
+                        <a href="#professional-executive">Professional & Executive Gift Sets</a>
+                        <a href="#wellness">Wellness</a>
+                    </div>
+                </div>
+                <a href="#contact-section">Contact Us</a>
+            </div>
+        </nav>
+    </header>
+
+    <section class="hero">
+        <div class="hero-content">
+            <h2>Exquisite Luxury<br>Redefined</h2>
+            <p class="hero-subtitle">Discover our meticulously curated collection of the world's finest gifts, where every piece tells a story of unparalleled elegance and sophistication.</p>
+            
+            <div class="moving-circle"></div>
+            <div class="features">
+                <div class="feature">
+                    <div class="feature-icon">✨</div>
+                    <h3>Artisan Craftsmanship</h3>
+                    <p>Each piece is hand-selected from renowned artisans and luxury brands worldwide, ensuring unmatched quality and exclusivity.</p>
+                </div>
+                <div class="feature">
+                    <div class="feature-icon">🎁</div>
+                    <h3>Bespoke Experience</h3>
+                    <p>Personalized gift curation with premium wrapping, custom messaging, and white-glove service tailored to your vision.</p>
+                </div>
+                <div class="feature">
+                    <div class="feature-icon">🌍</div>
+                    <h3>Global Concierge</h3>
+                    <p>Worldwide luxury delivery with temperature-controlled shipping and signature handling to preserve perfection.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="gifts" class="categories">
+        <div class="categories-container">
+            <h2>Gift Collections</h2>
+            
+            <p class="categories-subtitle">
+                Explore our exclusive selection of luxury gifts, perfect for any discerning recipient. From rare beauty to timeless accessories, find the ultimate expression of sophistication.
+            </p>
+
+            <h3>Gifts for Her</h3>
+            <p class="categories-subtitle" style="margin-bottom: 2rem;">
+                We've curated an exclusive selection of the world's most coveted luxury gifts — from rare cashmere to vintage champagne, artisanal beauty to first-edition literature.
+            </p>
+
+            <div class="category-grid">
+                <div class="category-card">
+                    <img src="https://images.unsplash.com/photo-1596462502278-27bfdc403348?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=800&q=80" alt="Haute Beauty" class="category-img">
+                    <h3>Haute Beauty</h3>
+                    <p>Exclusive skincare rituals, rare fragrances, and wellness treasures from the world's most prestigious beauty houses.</p>
+                    <button class="btn">Discover Beauty</button>
+                </div>
+                <div class="category-card">
+                    <img src="https://images.unsplash.com/photo-1541643600914-78b084683601?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=800&q=80" alt="Rare Fragrances" class="category-img">
+                    <h3>Rare Fragrances</h3>
+                    <p>Limited edition perfumes and artisanal scented candles crafted by master perfumers with the finest ingredients.</p>
+                    <button class="btn">Explore Scents</button>
+                </div>
+                <div class="category-card">
+                    <img src="https://images.unsplash.com/photo-1515562141207-7a88fb7ce338?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=800&q=80" alt="Couture Accessories" class="category-img">
+                    <h3>Couture Accessories</h3>
+                    <p>Timeless jewelry, silk scarves, and luxury accessories handcrafted by skilled artisans using precious materials.</p>
+                    <button class="btn">View Collection</button>
+                </div>
+                <div class="category-card">
+                    <img src="https://images.unsplash.com/photo-1599643478518-a784e5dc4c8f?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=800&q=80" alt="Fine Jewelry" class="category-img">
+                    <h3>Fine Jewelry</h3>
+                    <p>Exceptional pieces featuring rare gemstones and precious metals in both contemporary and classic designs.</p>
+                    <button class="btn">Browse Jewelry</button>
+                </div>
+                <div class="category-card">
+                    <img src="https://images.unsplash.com/photo-1602143407151-7111542de6e8?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=800&q=80" alt="Artisan Candles" class="category-img">
+                    <h3>Artisan Candles</h3>
+                    <p>Hand-poured candles with rare, exotic scents designed to transform any space into a sanctuary of luxury.</p>
+                    <button class="btn">Illuminate</button>
+                </div>
+                <div class="category-card">
+                    <img src="https://images.unsplash.com/photo-1578662996442-48f60103fc96?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=800&q=80" alt="Botanical Artistry" class="category-img">
+                    <h3>Botanical Artistry</h3>
+                    <p>Preserved floral arrangements and botanical sculptures that capture nature's beauty in eternal elegance.</p>
+                    <button class="btn">Eternal Bloom</button>
+                </div>
+                <div class="category-card" id="gourmet">
+                    <img src="https://images.unsplash.com/photo-1574535468286-5d8d2d9b3bb5?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=800&q=80" alt="Gourmet Delights" class="category-img">
+                    <h3>Gourmet Delights</h3>
+                    <p>Curated selections of rare wines, aged cheeses, artisanal chocolates, and exotic teas.</p>
+                    <button class="btn">Savor the Moment</button>
+                </div>
+            </div>
+
+            <h3>Curated Selections by Price</h3>
+            <p class="categories-subtitle" style="margin-bottom: 2rem;">
+                Find the perfect gift within your desired budget, all maintaining Marquee's standard of impeccable quality.
+            </p>
+
+            <div class="filters">
+                <div class="filter-group">
+                    <h4>Occasion</h4>
+                    <select>
+                        <option>All Occasions</option>
+                        <option>Anniversary</option>
+                        <option>Birthday</option>
+                        <option>Wedding</option>
+                        <option>Holiday</option>
+                    </select>
+                </div>
+                <div class="filter-group">
+                    <h4>Price Range</h4>
+                    <select>
+                        <option>All Prices</option>
+                        <option>$100 - $500</option>
+                        <option>$500 - $1,000</option>
+                        <option>$1,000 - $5,000</option>
+                        <option>$5,000+</option>
+                    </select>
+                </div>
+                <div class="filter-group">
+                    <h4>Recipient</h4>
+                    <select>
+                        <option>All Recipients</option>
+                        <option>For Her</option>
+                        <option>For Him</option>
+                        <option>Corporate</option>
+                    </select>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="image-sequence-section">
+        <div class="categories-container" style="text-align: center; margin-bottom: 3rem;">
+            <h2>The Marquee Vault</h2>
+            <p class="categories-subtitle">A scrolling gallery of our recently curated and most exclusive items.</p>
+        </div>
+        <div class="image-sequence-wrapper">
+            <div class="image-sequence-item">
+                <img src="https://images.unsplash.com/photo-1541643600914-78b084683601?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=800&q=80" alt="Rare Fragrance">
+            </div>
+            <div class="image-sequence-item">
+                <img src="https://images.unsplash.com/photo-1550547660-d941074e0d44?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=800&q=80" alt="Luxury Watch">
+            </div>
+            <div class="image-sequence-item">
+                <img src="https://images.unsplash.com/photo-1574535468286-5d8d2d9b3bb5?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=800&q=80" alt="Fine Gourmet">
+            </div>
+            <div class="image-sequence-item">
+                <img src="https://images.unsplash.com/photo-1596462502278-27bfdc403348?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=800&q=80" alt="Haute Beauty Set">
+            </div>
+            <div class="image-sequence-item">
+                <img src="https://images.unsplash.com/photo-1557022201-163e70d740c8?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=800&q=80" alt="Designer Pen Set">
+            </div>
+            <div class="image-sequence-item">
+                <img src="https://images.unsplash.com/photo-1541643600914-78b084683601?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=800&q=80" alt="Rare Fragrance">
+            </div>
+            <div class="image-sequence-item">
+                <img src="https://images.unsplash.com/photo-1550547660-d941074e0d44?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=800&q=80" alt="Luxury Watch">
+            </div>
+            <div class="image-sequence-item">
+                <img src="https://images.unsplash.com/photo-1574535468286-5d8d2d9b3bb5?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=800&q=80" alt="Fine Gourmet">
+            </div>
+            <div class="image-sequence-item">
+                <img src="https://images.unsplash.com/photo-1596462502278-27bfdc403348?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=800&q=80" alt="Haute Beauty Set">
+            </div>
+            <div class="image-sequence-item">
+                <img src="https://images.unsplash.com/photo-1557022201-163e70d740c8?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=800&q=80" alt="Designer Pen Set">
+            </div>
+        </div>
+    </section>
+
+    <section id="contact-section" class="contact-section">
+        <div class="contact-details">
+            <h2>Connect with a Concierge</h2>
+            <p>Have a question about a specific item, need help curating a bespoke collection, or require our VIP white-glove service? Our dedicated team is available 24/7.</p>
+            <p>
+                Email: <a href="mailto:concierge@marquee.com">concierge@marquee.com</a><br>
+                Phone: <a href="tel:+18005550199">+1 (800) 555-0199</a>
+            </p>
+            <div class="social-links">
+                <a href="https://facebook.com/marquee" target="_blank" aria-label="Facebook">📘</a>
+                <a href="https://instagram.com/marquee" target="_blank" aria-label="Instagram">📷</a>
+                <a href="https://twitter.com/marquee" target="_blank" aria-label="Twitter">🐦</a>
+                <a href="https://pinterest.com/marquee" target="_blank" aria-label="Pinterest">📌</a>
+            </div>
+
+            <div class="direct-payments">
+                <h3>Direct Payments</h3>
+                <p>You can also send money directly to us via Airtel Money:</p>
+                <p>Airtel Money Account Number: <strong>+XXX XXX XXXX</strong> (Replace with actual account number)</p>
+                <p>Please include your order number or name in the transaction details for proper allocation.</p>
+            </div>
+        </div>
+    </section>
+
+    <footer class="footer">
+        <div class="footer-content">
+            <h3>MARQUEE</h3>
+            <p>Curating the extraordinary for life's most precious moments</p>
+            <div class="footer-links">
+                <a href="#" onclick="showHeritage(event)">Our Heritage</a>
+                <a href="#" onclick="showConcierge(event)">Concierge Service</a>
+                <a href="#" onclick="showReturns(event)">Returns & Exchanges</a>
+                <a href="#privacy">Privacy</a>
+                <a href="#terms">Terms</a>
+            </div>
+            <p>&copy; 2025 Marquee. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <div id="infoModal" class="modal">
+        <div class="modal-content">
+            <span class="close-button">&times;</span>
+            <div id="modalContent">
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Mobile Navigation Toggle
+        const mobileMenuToggle = document.getElementById('mobile-menu-toggle');
+        const mobileNav = document.getElementById('mobile-nav');
+        const categoriesDropdown = document.getElementById('categories-dropdown');
+
+        if (mobileMenuToggle && mobileNav) {
+            mobileMenuToggle.addEventListener('click', () => {
+                mobileNav.classList.toggle('active');
+            });
+        }
+
+        // Mobile Dropdown Toggle
+        if (categoriesDropdown) {
+            const dropbtn = categoriesDropdown.querySelector('.dropbtn');
+            if (dropbtn) {
+                dropbtn.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    categoriesDropdown.classList.toggle('active');
+                });
+            }
+        }
+
+        // Theme Toggle Logic
+        const body = document.body;
+        const themeToggle = document.getElementById('theme-toggle');
+
+        function initializeTheme() {
+            const savedTheme = localStorage.getItem('theme');
+            if (savedTheme === 'light') {
+                body.classList.add('light-mode');
+                themeToggle.innerHTML = '🌙';
+            } else {
+                body.classList.remove('light-mode');
+                themeToggle.innerHTML = '☀️';
+            }
+        }
+
+        if (themeToggle) {
+            themeToggle.addEventListener('click', () => {
+                body.classList.toggle('light-mode');
+                const isLight = body.classList.contains('light-mode');
+                localStorage.setItem('theme', isLight ? 'light' : 'dark');
+                themeToggle.innerHTML = isLight ? '🌙' : '☀️';
+            });
+        }
+
+        // Modal Logic
+        const modal = document.getElementById('infoModal');
+        const modalContent = document.getElementById('modalContent');
+        const closeBtn = document.querySelector('.close-button');
+
+        function showModal(title, content) {
+            modalContent.innerHTML = `<h2>${title}</h2>${content}`;
+            modal.style.display = 'block';
+        }
+
+        if (closeBtn) {
+            closeBtn.onclick = function() {
+                modal.style.display = 'none';
+            }
+        }
+
+        if (modal) {
+            window.onclick = function(event) {
+                if (event.target == modal) {
+                    modal.style.display = 'none';
+                }
+            }
+        }
+
+        // Footer Modal Functions
+        function showHeritage(event) {
+            event.preventDefault(); 
+            const title = "Our Heritage: The Marquee Story";
+            const content = `
+                <p>Marquee was founded in 2005 on the principle that a gift should be an experience, not just an object. Our founders, a collective of global connoisseurs, sought to bring together the rarest and most exquisite items, creating a platform where luxury gifting is truly an art form.</p>
+                <ul>
+                    <li><strong>2005:</strong> Launched first boutique featuring European haute couture and rare antiques.</li>
+                    <li><strong>2010:</strong> Introduced the Bespoke Gifting Concierge service.</li>
+                    <li><strong>2020:</strong> Expanded our curated collection to include sustainable luxury and artisan wellness.</li>
+                </ul>
+                <p>We continue to uphold a legacy of excellence, ensuring every gift from Marquee is a testament to timeless elegance.</p>
+            `;
+            showModal(title, content);
+        }
+
+        function showConcierge(event) {
+            event.preventDefault();
+            const title = "Concierge Service: Your Personal Curator";
+            const content = `
+                <p>Our dedicated Concierge Service offers personalized assistance for the most demanding gifting needs. From finding a rare vintage item to coordinating complex international deliveries, your personal curator manages every detail.</p>
+                <p><strong>Services Include:</strong></p>
+                <ul>
+                    <li>Personalized product sourcing and mood boarding.</li>
+                    <li>Exclusive access to limited edition and pre-release collections.</li>
+                    <li>Custom engraving, embroidery, and packaging design.</li>
+                    <li>Worldwide white-glove delivery and hand-delivery options.</li>
+                </ul>
+                <p>Contact us to begin your bespoke gifting journey.</p>
+            `;
+            showModal(title, content);
+        }
+
+        function showReturns(event) {
+            event.preventDefault();
+            const title = "Returns & Exchanges";
+            const content = `
+                <p>We stand by the quality of our curated selections. If you are not entirely satisfied with your purchase, we are here to help.</p>
+                <ul>
+                    <li><strong>Eligibility:</strong> Items must be unused, in original packaging, and returned within 30 days of receipt.</li>
+                    <li><strong>Exclusions:</strong> Personalized items, perishable goods (gourmet food/flowers), and final sale items are non-refundable.</li>
+                    <li><strong>Process:</strong> Please contact our support team to initiate a return and receive a prepaid shipping label. Refunds are processed within 7-10 business days after inspection.</li>
+                </ul>
+            `;
+            showModal(title, content);
+        }
+
+        // Initialize theme on load
+        initializeTheme();
+    </script>
+</body>
+</html>
